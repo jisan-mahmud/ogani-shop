@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block 'hero' %}{% endblock %}
+{% block 'body' %}
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+	<div class="container">
+		<div class="row">
+		<aside class="col-md-3">
+			<!--   SIDEBAR   -->
+			<ul class="list-group">
+				<a class="list-group-item active-a" href="{% url 'profile' %}"> My order history </a>
+				<a class="list-group-item" href="{% url 'change_password' %}">Change Password </a>
+				<a class="list-group-item" href="{% url 'receive'  %}"> Received orders </a>
+			</ul>
+			<br>
+			<a class="btn btn-light btn-block" href="#"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
+			<!--   SIDEBAR .//END   -->
+		</aside>
+		<main class="col-md-9">
+			{% for order in orders %}
+			<article class="card">
+				<header class="card-header">
+					<strong class="d-inline-block mr-3">Order ID: {{order.id}}</strong>
+					<span>Order Date: {{order.order_date}}</span>
+				</header>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-8">
+							<h6 class="text-muted">Delivery to</h6>
+							<p>{{order.first_name}} {{order.last_name}} <br>
+							Phone {{order.phone_number}} Email: {{order.email_address}} <br>
+							Location: {{order.address}}
+							 </p>
+						</div>
+						<div class="col-md-4">
+							<h6 class="text-muted">Payment: </h6>
+							<span class="text-success">{{order.payment_method}}</span><br/>
+							 <span class="b">Total Amount {{order.total_amount}} Tk</span>
+						</div>
+					</div> <!-- row.// -->
+				</div> <!-- card-body .// -->
+				<div class="table-responsive">
+				<table class="table table-hover">
+					{% for product in order.products.all %}
+					<tr>
+						<td width="80">
+							<img src="{{product.image.url}}" class="img-xs">
+						</td>
+						<td>
+							<p class="title mb-0">{{product.product_name}} </p>
+							<var class="price text-muted">{{product.after_discount}}</var>
+						</td>
+						<td>{{product.category}}</td>
+						<td width="250" class="toggle-button">
+							<button class="btn btn-outline-primary">Track order</button>
+							<p style="display: none;" class="hidden-content">{{order.status}}</p>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+				</div> <!-- table-responsive .end// -->
+				</article> <!-- order-group.// -->
+			{% endfor %}
+		</main>
+	</div> <!-- row.// -->
+	</div>
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add a click event listener to all buttons inside elements with the class 'toggle-button'
+        document.querySelectorAll('.toggle-button button').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                // Prevent the default behavior of the button (e.g., prevent submitting a form)
+                event.preventDefault();
+
+                // Find the sibling p tag of the clicked button
+                var hiddenContent = this.parentNode.querySelector('.hidden-content');
+
+                // Toggle the visibility of the p tag
+                hiddenContent.style.display = (hiddenContent.style.display === 'block' || hiddenContent.style.display === '') ? 'none' : 'block';
+            });
+        });
+    });
+</script>
+
+{% endblock %}

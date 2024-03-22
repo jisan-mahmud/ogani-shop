@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'body' %}
+
+    <!-- Featured Section -->
+    <section class="featured spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Featured Products</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row featured__filter">
+                <!-- 8 items/products -->
+                {% if products %}
+                {% for product in products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="{{product.image.url}}">
+                            <div class="featured__item__pic__hover">
+                                {% if user.is_authenticated %}
+                                <button style="background-color: #833030;" type="button" class="btn btn-danger"><a href="{% url 'added_cart' product.id %}">Add To Cart</a></button>
+                                {% else %}
+                                <button style="background-color: #833030;" type="button" class="btn btn-danger"><a href="{% url 'login' %}">Add To Cart</a></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="{% url 'product_details' product.slug %}">{{product.product_name}}</a></h6>
+                            <h5>{{product.after_discount}} TK/{{product.unit}}</h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!-- Featured Section END -->
+
+    <!-- Banner -->
+    <div style="margin-bottom: 50px;" class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner__pic">
+                        <a href="{% url 'category' 'fruit-nut-gifts' %}"><img  src=" {% static 'img/banner/banner-1.jpg' %}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner__pic">
+                        <a href="{% url 'category' 'fresh-berries' %}"><img  src=" {% static 'img/banner/banner-2.jpg' %}" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Banner END -->
+{% endblock %}
