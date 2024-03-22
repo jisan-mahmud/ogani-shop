@@ -63,7 +63,7 @@ class DetailsView(View):
         point2 = details2.loc
 
         h = hs.haversine(point1, point2, Unit.KILOMETERS)
-        return HttpResponse(h)
+        print(h)
 
 
         product = Product.objects.get(slug= product_slug)
