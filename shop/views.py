@@ -61,17 +61,17 @@ class DetailsView(View):
         if ip == '127.0.0.1': # Only define the IP if you are testing on localhost.
             ip = '8.8.8.8'
 
-        return HttpResponse(ip)
-        # shop_ip = '27.123.253.161'
-        # access_token = 'ffe413e672a58f'
-        # handler = ipinfo.getHandler(access_token= access_token)
-        # details1 = handler.getDetails(shop_ip)
-        # details2 = handler.getDetails(user_ip)
-        # point1 = details1.loc
-        # point2 = details2.loc
+        shop_ip = '27.123.253.161'
+        user_ip = ip
+        access_token = 'ffe413e672a58f'
+        handler = ipinfo.getHandler(access_token= access_token)
+        details1 = handler.getDetails(shop_ip)
+        details2 = handler.getDetails(user_ip)
+        point1 = details1.loc
+        point2 = details2.loc
 
-        # h = hs.haversine(point1, point2, Unit.KILOMETERS)
-        # print(h)
+        h = hs.haversine(point1, point2, Unit.KILOMETERS)
+        return HttpResponse(h)
 
 
         product = Product.objects.get(slug= product_slug)
