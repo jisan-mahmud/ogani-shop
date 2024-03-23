@@ -53,17 +53,25 @@ class ShopView(View):
 class DetailsView(View):
     template_name = 'shop/shop-details.html'
     def get(self, request, product_slug):
-        shop_ip = '27.123.253.161'
-        user_ip = request.META.get('REMOTE_ADDR')
-        access_token = 'ffe413e672a58f'
-        handler = ipinfo.getHandler(access_token= access_token)
-        details1 = handler.getDetails(shop_ip)
-        details2 = handler.getDetails(user_ip)
-        point1 = details1.loc
-        point2 = details2.loc
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[-1].strip()
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        if ip == '127.0.0.1': # Only define the IP if you are testing on localhost.
+            ip = '8.8.8.8'
 
-        h = hs.haversine(point1, point2, Unit.KILOMETERS)
-        print(h)
+        return HttpResponse(ip)
+        # shop_ip = '27.123.253.161'
+        # access_token = 'ffe413e672a58f'
+        # handler = ipinfo.getHandler(access_token= access_token)
+        # details1 = handler.getDetails(shop_ip)
+        # details2 = handler.getDetails(user_ip)
+        # point1 = details1.loc
+        # point2 = details2.loc
+
+        # h = hs.haversine(point1, point2, Unit.KILOMETERS)
+        # print(h)
 
 
         product = Product.objects.get(slug= product_slug)
