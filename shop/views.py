@@ -67,10 +67,9 @@ class DetailsView(View):
         handler = ipinfo.getHandler(access_token= access_token)
         details1 = handler.getDetails(shop_ip)
         details2 = handler.getDetails(user_ip)
-        point1 = details1.loc
-        point2 = details2.loc
-
-        h = hs.haversine(point1, point2, Unit.KILOMETERS)
+        lat1, lon1 = map(float, details1['loc'].split(','))
+        lat2, lon2 = map(float, details2['loc'].split(','))
+        h = hs.haversine(lat1, lon1, lat2, lon2)
         return HttpResponse(h)
 
 
