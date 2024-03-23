@@ -19,6 +19,7 @@ def time_calculate(request):
     point1 = details1.loc.split(',')
     point2 = details2.loc.split(',')
     distance = calculate_distance(float(point1[0]), float(point1[1]), float(point2[0]), float(point2[1]))
-    minutes = distance * 20
+    print(distance)
+    minutes = distance * 5
     day = int((minutes / 60) / 12)
     return day
