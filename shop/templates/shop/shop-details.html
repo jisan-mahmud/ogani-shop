@@ -56,7 +56,7 @@
                         <ul>
                             <li><b>Availability</b>
                             <span>{% if product.is_available == True %}In Stock{% endif %}</span></li>
-                            <li><b>Shipping</b> <span> day shipping.</span></li>
+                            <li><b>Estimate Shipping Time: </b> <span>{{estimate_shipping_time}} day shipping.</span></li>
                             <li><b>Weight</b> <span>{{product.weight}} {{product.unit}}</span></li>
                         </ul>
                     </div>

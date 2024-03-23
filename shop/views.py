@@ -7,10 +7,7 @@ from shop.models import Product, CustomerReview
 from category.models import Category
 from order.models import Order
 from .forms import ReviewForm
-import ipinfo
-import haversine as hs
-from haversine import Unit
-from django.shortcuts import HttpResponse
+from .estmate_time import time_calculate
 
 class ShopView(View):
     template_name = 'shop/shop.html'
@@ -53,26 +50,6 @@ class ShopView(View):
 class DetailsView(View):
     template_name = 'shop/shop-details.html'
     def get(self, request, product_slug):
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[-1].strip()
-        else:
-            ip = request.META.get('REMOTE_ADDR')
-        if ip == '127.0.0.1': # Only define the IP if you are testing on localhost.
-            ip = '8.8.8.8'
-
-        shop_ip = '27.123.253.161'
-        user_ip = ip
-        access_token = 'ffe413e672a58f'
-        handler = ipinfo.getHandler(access_token= access_token)
-        details1 = handler.getDetails(shop_ip)
-        details2 = handler.getDetails(user_ip)
-        lat1, lon1 = map(float, details1['loc'].split(','))
-        lat2, lon2 = map(float, details2['loc'].split(','))
-        h = hs.haversine(lat1, lon1, lat2, lon2)
-        return HttpResponse(h)
-
-
         product = Product.objects.get(slug= product_slug)
         product.views+=1 #increment product view
         product.save()
@@ -97,6 +74,7 @@ class DetailsView(View):
 
         context = {
             'product': product,
+            'estimate_shipping_time': time_calculate(request)+product.shipping,
             'reviews': review_obj,
             'related_products': related_products,
             'total_review': total_review,
