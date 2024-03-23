@@ -16,8 +16,8 @@ def time_calculate(request):
     handler = ipinfo.getHandler(access_token= access_token)
     details1 = handler.getDetails(shop_ip)
     details2 = handler.getDetails(user_ip)
-    point1 = details1.loc
-    point2 = details2.loc
+    point1 = details1.loc.split(',')
+    point2 = details2.loc.split(',')
     distance = calculate_distance(float(point1[0]), float(point1[1]), float(point2[0]), float(point2[1]))
     minutes = distance * 5
     day = int((minutes / 60) / 12)
